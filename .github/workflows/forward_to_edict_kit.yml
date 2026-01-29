@@ -1,0 +1,76 @@
+name: forward_to_edict_kit
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  forward:
+    if: github.event.label.name == 'forward:edict-kit'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create issue in edict-kit (requires secret)
+        id: create
+        if: ${{ secrets.EDICT_KIT_PAT != '' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.EDICT_KIT_PAT }}
+          script: |
+            const issue = context.payload.issue;
+
+            const owner = "edict-lab";
+            const repo  = "edict-kit";
+
+            const title = `[INTAKE #${issue.number}] ${issue.title}`;
+            const body = [
+              `Source: ${issue.html_url}`,
+              `Reporter: @${issue.user.login}`,
+              "",
+              issue.body || "(no body)"
+            ].join("\n");
+
+            const res = await github.rest.issues.create({ owner, repo, title, body });
+            core.setOutput("url", res.data.html_url);
+
+      - name: Comment back + mark forwarded
+        if: ${{ steps.create.outputs.url != '' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const url = '${{ steps.create.outputs.url }}';
+
+            async function ensureLabel(name, color, description) {
+              try { await github.rest.issues.getLabel({ ...context.repo, name }); }
+              catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ ...context.repo, name, color, description });
+                } else { throw e; }
+              }
+            }
+
+            await ensureLabel("forwarded:edict-kit", "0E8A16", "Forwarded to edict-kit");
+
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.issue.number,
+              labels: ["forwarded:edict-kit"]
+            });
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `✅ 내부 티켓 생성됨: ${url}`
+            });
+
+            // 중복 방지: forward 라벨 제거(실패해도 무시)
+            try {
+              await github.rest.issues.removeLabel({
+                ...context.repo,
+                issue_number: context.issue.number,
+                name: "forward:edict-kit"
+              });
+            } catch (e) {}
