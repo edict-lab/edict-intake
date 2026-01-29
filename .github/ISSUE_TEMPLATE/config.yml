@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "EDRP Intake (PoC / Certification / Partner)"
+    url: "https://github.com/edict-lab/edict-intake/issues/new/choose"
+    about: "Use templates to submit (Do NOT upload secrets)."
