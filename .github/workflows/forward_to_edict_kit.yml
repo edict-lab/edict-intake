@@ -12,9 +12,7 @@ jobs:
     if: github.event.label.name == 'forward:edict-kit'
     runs-on: ubuntu-latest
     steps:
-      - name: Create issue in edict-kit (requires secret)
-        id: create
-        if: ${{ secrets.EDICT_KIT_PAT != '' }}
+      - name: Create issue in edict-kit
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.EDICT_KIT_PAT }}
@@ -35,13 +33,12 @@ jobs:
             const res = await github.rest.issues.create({ owner, repo, title, body });
             core.setOutput("url", res.data.html_url);
 
-      - name: Comment back + mark forwarded
-        if: ${{ steps.create.outputs.url != '' }}
+      - name: Mark forwarded + comment back
+        if: always()
         uses: actions/github-script@v7
         with:
-          github-token: ${{ github.token }}
           script: |
-            const url = '${{ steps.create.outputs.url }}';
+            const url = "${{ steps[0].outputs.url }}";
 
             async function ensureLabel(name, color, description) {
               try { await github.rest.issues.getLabel({ ...context.repo, name }); }
@@ -54,17 +51,26 @@ jobs:
 
             await ensureLabel("forwarded:edict-kit", "0E8A16", "Forwarded to edict-kit");
 
+            // 성공/실패 상관없이 표시
             await github.rest.issues.addLabels({
               ...context.repo,
               issue_number: context.issue.number,
               labels: ["forwarded:edict-kit"]
             });
 
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `✅ 내부 티켓 생성됨: ${url}`
-            });
+            if (url) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body: `✅ 내부 티켓 생성됨: ${url}`
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body: `❌ 포워딩 실패: Actions 탭에서 forward_to_edict_kit 실행 로그를 확인해주세요.`
+              });
+            }
 
             // 중복 방지: forward 라벨 제거(실패해도 무시)
             try {
