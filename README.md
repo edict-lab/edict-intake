@@ -30,3 +30,23 @@ Security / 보안
 Do NOT upload private keys / tokens / customer data.
 
 민감 자료는 요청 시 별도 안전 채널로 안내합니다.
+What happens next / 이후 흐름
+
+Intake → auto labeling/check → internal ticket (edict-kit) → tracked in EDRP Leads
+
+
+---
+
+# 2단계: “3문항을 템플릿에 필수로” 넣기 = 어디에 넣는 건가?
+
+**이슈 템플릿(폼)은 repo 안의 파일**로 관리돼. 위치는 여기:
+
+- `edict-intake/.github/ISSUE_TEMPLATE/` 폴더 안
+  - `poc_request.yml`
+  - `cert_request.yml`
+  - `partner_request.yml`
+
+“필수”는 YAML 안에서 이렇게 쓰는 거야:
+```yaml
+validations:
+  required: true
