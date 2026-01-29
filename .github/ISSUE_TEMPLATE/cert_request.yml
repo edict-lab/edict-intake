@@ -1,0 +1,55 @@
+name: Certification Request
+description: Standards / certification packet request
+title: "[Cert] <org> - <topic>"
+body:
+  - type: input
+    id: org
+    attributes:
+      label: "Organization / 조직·기관명"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: "1) Certification context / 인증·표준 맥락"
+      options:
+        - "Standards body / Regulator"
+        - "Internal audit / Compliance"
+        - "Procurement requirement"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: env
+    attributes:
+      label: "2) Environment / 환경"
+      options:
+        - "GitHub Actions"
+        - "Company CI"
+        - "Offline / Air-gapped"
+        - "Not sure yet"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deliverable
+    attributes:
+      label: "3) Needed packet / 필요한 패킷"
+      options:
+        - "1-page brief + sample label bundle"
+        - "Conformance cards + policy (timepoint/withdrawal)"
+        - "Full certification pack"
+        - "Not sure yet"
+    validations:
+      required: true
+
+  - type: textarea
+    id: labeljson
+    attributes:
+      label: "Optional: paste label.json / (선택) label.json"
+      value: |
+        ```json
+        { "example": true }
+        ```
