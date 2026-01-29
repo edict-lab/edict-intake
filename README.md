@@ -22,6 +22,8 @@ EDRP는 검증 가능한 **증거(Receipt)** 를 수집해 표준/체크리스�
 2) Choose a template: **PoC / Certification / Partner**
 3) (Optional) Paste `label.json` in the issue body as a JSON code block.
 
+▶ Demo (screenshots): docs/DEMO.md
+
 **Copy/paste example for the issue body (안전한 예시):**
     ```json
     { "example": true }
