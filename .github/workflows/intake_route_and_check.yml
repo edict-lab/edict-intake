@@ -1,0 +1,92 @@
+name: intake_route_and_check
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  intake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = (issue.title || "").toLowerCase();
+            const body = (issue.body || "");
+            const existing = (issue.labels || []).map(l => l.name);
+
+            // 1) Track inference
+            let track = "general";
+            if (title.includes("[poc") || title.includes("poc")) track = "poc";
+            else if (title.includes("[cert") || title.includes("cert")) track = "cert";
+            else if (title.includes("[partner") || title.includes("partner")) track = "partner";
+
+            const L = {
+              lead: "edrp:lead",
+              stage: "stage:inbound",
+              track: `track:${track}`,
+              ok: "edrp:submission-ok",
+              bad: "edrp:needs-fix",
+            };
+
+            // 2) Ensure labels exist
+            async function ensureLabel(name, color, description) {
+              try { await github.rest.issues.getLabel({ ...context.repo, name }); }
+              catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ ...context.repo, name, color, description });
+                } else { throw e; }
+              }
+            }
+
+            await ensureLabel(L.lead, "5319E7", "EDRP inbound lead");
+            await ensureLabel(L.stage, "0E8A16", "New inbound lead");
+            await ensureLabel("track:poc", "1D76DB", "PoC lead");
+            await ensureLabel("track:cert", "1D76DB", "Certification lead");
+            await ensureLabel("track:partner", "1D76DB", "Partner lead");
+            await ensureLabel("track:general", "1D76DB", "General lead");
+            await ensureLabel(L.ok, "0E8A16", "label.json parsed (syntax ok)");
+            await ensureLabel(L.bad, "B60205", "submission needs fix");
+
+            // 3) Always route labels
+            const route = [L.lead, L.stage, L.track].filter(x => !existing.includes(x));
+            if (route.length) {
+              await github.rest.issues.addLabels({
+                ...context.repo,
+                issue_number: issue.number,
+                labels: route
+              });
+            }
+
+            // 4) Extract ```json ...``` block
+            const m = body.match(/```(?:json|label\.json)\s*([\s\S]*?)```/i);
+            if (!m) return;
+
+            const raw = (m[1] || "").trim();
+            let ok = true, err = "";
+            try { JSON.parse(raw); } catch (e) { ok = false; err = String(e); }
+
+            // 5) Apply status labels + comment
+            if (ok) {
+              if (!existing.includes(L.ok)) {
+                await github.rest.issues.addLabels({ ...context.repo, issue_number: issue.number, labels: [L.ok] });
+              }
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: issue.number,
+                body: "🟢 JSON OK (syntax pass)."
+              });
+            } else {
+              if (!existing.includes(L.bad)) {
+                await github.rest.issues.addLabels({ ...context.repo, issue_number: issue.number, labels: [L.bad] });
+              }
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: issue.number,
+                body: "🔴 JSON ERROR:\n```\n" + err + "\n```"
+              });
+            }
