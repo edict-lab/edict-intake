@@ -1,0 +1,62 @@
+name: PoC Request
+description: 2–4 week enterprise PoC
+title: "[PoC] <org> - <topic>"
+body:
+  - type: input
+    id: org
+    attributes:
+      label: "Company / 조직·회사명"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: "1) What are we judging? / 대상·범위"
+      options:
+        - "AI/ML (model/data/training/deployment)"
+        - "Finance/Risk (model/controls/approvals)"
+        - "Software (build/release/docs/supply-chain)"
+        - "Regulated/Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: env
+    attributes:
+      label: "2) Where will verification run? / 실행 환경"
+      options:
+        - "GitHub Actions"
+        - "Company CI (Jenkins/GitLab/etc.)"
+        - "Offline / Air-gapped"
+        - "Not sure yet"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deliverable
+    attributes:
+      label: "3) What output do you need? / 원하는 산출물"
+      options:
+        - "Label bundle only (label.json + out/)"
+        - "Label bundle + report"
+        - "Certification packet (brief/cards/policy)"
+        - "Not sure yet"
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes / 추가 설명 (optional)"
+      placeholder: "핵심 요구사항, 마감, 제약 등을 간단히 적어주세요."
+
+  - type: textarea
+    id: labeljson
+    attributes:
+      label: "Optional: paste label.json / (선택) label.json 붙여넣기"
+      description: "Paste as ```json fenced code block``` to enable auto-check."
+      value: |
+        ```json
+        { "example": true }
+        ```
