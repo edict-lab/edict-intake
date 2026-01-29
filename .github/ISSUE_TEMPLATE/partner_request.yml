@@ -1,0 +1,48 @@
+name: Partner Request
+description: Integration / reseller / alliance
+title: "[Partner] <org> - <topic>"
+body:
+  - type: input
+    id: org
+    attributes:
+      label: "Company / 조직·회사명"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: partner_type
+    attributes:
+      label: "1) Partner type / 파트너 유형"
+      options:
+        - "Integrator"
+        - "Auditor / Certification body"
+        - "Reseller"
+        - "OSS contributor"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: market
+    attributes:
+      label: "2) Target market / 목표 시장"
+      options:
+        - "Global"
+        - "Korea"
+        - "US"
+        - "EU"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deliverable
+    attributes:
+      label: "3) What do you want? / 원하는 형태"
+      options:
+        - "Partner enablement kit"
+        - "Joint PoC"
+        - "Certification workflow partnership"
+        - "Not sure yet"
+    validations:
+      required: true
