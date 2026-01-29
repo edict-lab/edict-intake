@@ -13,7 +13,7 @@ This demo shows the *evidence → decision → label → tracking* workflow usin
 **EN**: Submit via template with required questions.  
 **KR**: 템플릿 필수 문항으로 리드가 구조화되어 접수됩니다.
 
-![Step 1](demo/01-intake-form.png)
+![Step 1](../01-intake-form.png)
 
 ---
 
@@ -21,7 +21,7 @@ This demo shows the *evidence → decision → label → tracking* workflow usin
 **EN**: Auto-labeling runs immediately (lead/stage/track) and evidence-format check posts a comment.  
 **KR**: 리드/단계/트랙 라벨이 자동으로 붙고, 증거 형식 검사가 코멘트로 남습니다.
 
-![Step 2](demo/02-intake-created.png)
+![Step 2](../02-intake-created.png)
 
 ---
 
@@ -29,7 +29,7 @@ This demo shows the *evidence → decision → label → tracking* workflow usin
 **EN**: Maintainer forwards only valid leads into the private engine repo (spam-safe).  
 **KR**: 유효한 리드만 유지보수자가 내부로 포워딩해 스팸/노이즈를 차단합니다.
 
-![Step 3](demo/03-forward-label.png)
+![Step 3](../03-forward-label.png)
 
 ---
 
@@ -37,7 +37,7 @@ This demo shows the *evidence → decision → label → tracking* workflow usin
 **EN**: A private internal ticket is created automatically.  
 **KR**: 내부 레포(edict-kit)에 티켓이 자동 생성됩니다.
 
-![Step 4](demo/04-edic-kit-ticket.png)
+![Step 4](../04-edic-kit-ticket.png)
 
 ---
 
@@ -45,7 +45,7 @@ This demo shows the *evidence → decision → label → tracking* workflow usin
 **EN**: Ticket appears in `EDRP Leads` and is staged in **Inbound** automatically.  
 **KR**: `EDRP Leads` 보드에 자동으로 들어오고 **Inbound**에 자동 배치됩니다.
 
-![Step 5](demo/05-board-inbound.png)
+![Step 5](../05-board-inbound.png)
 
 ---
 
