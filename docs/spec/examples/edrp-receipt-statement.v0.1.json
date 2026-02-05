@@ -1,0 +1,32 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "artifact-or-release",
+      "digest": { "sha256": "..." }
+    }
+  ],
+  "predicateType": "https://example.org/edrp/receipt/v0.1",
+  "predicate": {
+    "schema_version": "0.1",
+    "timepoint": "2026-02-03T00:00:00Z",
+    "inputs": { "repo": "org/repo", "ref": "refs/heads/main", "commit": "..." },
+    "environment": { "ci": "github-actions", "runner": "ubuntu-latest" },
+    "evidence": [
+      { "type": "log", "uri": "https://example.org/logs/..." },
+      { "type": "attestation", "uri": "https://example.org/attestations/..." }
+    ],
+    "requested_outputs": ["high_report", "cards", "checklist"],
+    "decision": {
+      "verdict": "pass",
+      "reason_codes": ["example.reason.code"],
+      "next_action": "allow"
+    },
+    "outputs": [
+      {
+        "name": "high_report.json",
+        "uri": "https://github.com/edict-lab/edict-sandbox/blob/main/docs/latest/high_report.json"
+      }
+    ]
+  }
+}
