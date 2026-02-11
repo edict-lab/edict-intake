@@ -1,14 +1,14 @@
 # EDICT-Rho Protocol (EDRP)
-## Evidence-based Mathematical Decision Engine / 증거기반 수학적 판정 엔진
+## Evidence-based Procedural Decision Engine / 증거기반 절차적 판정 엔진
 
 ▶ Demo (screenshots): https://github.com/edict-lab/edict-intake/blob/main/docs/demo/docs/DEMO.md
 ▶ Live demo output (latest): https://github.com/edict-lab/edict-sandbox/tree/main/docs/latest
 
 **EN**  
-EDRP collects verifiable **receipts (evidence)**, performs reproducible **mathematical decisions** against conformance rules, and produces signed **labels (label.json)** + **registry snapshots** for audit-ready distribution.
+EDRP collects verifiable **receipts (evidence)**, performs reproducible **Procedural decisions** against conformance rules, and produces signed **labels (label.json)** + **registry snapshots** for audit-ready distribution.
 
 **KR**  
-EDRP는 검증 가능한 **증거(Receipt)** 를 수집해 표준/체크리스트에 따라 **재현 가능한 수학적 판정**을 수행하고, 결과를 **서명된 라벨(label.json) + 레지스트리 스냅샷**으로 남겨 유통·감사·조달에 바로 쓰게 하는 절차적 검증 인프라입니다.
+EDRP는 검증 가능한 **증거(Receipt)** 를 수집해 표준/체크리스트에 따라 **재현 가능한 절차적 판정**을 수행하고, 결과를 **서명된 라벨(label.json) + 레지스트리 스냅샷**으로 남겨 유통·감사·조달에 바로 쓰게 하는 절차적 검증 인프라입니다.
 
 ---
 
